@@ -2,11 +2,11 @@ POST https://kinapp-api.vercel.app/api/student
 Content-Type: application/json
 
 {
-"dni":"22862874",
+"dni":"22862810",
 "ingreso":"2024",
-"apellido":"AAAAcom1",
+"apellido":"AAAAcom10",
 "nombres":"URIEL JONATHAN DAMIáN",
-"comision":"01",
+"comision":"10",
 "horarioComision":"Ma 08:00 a 12:00",
 "cursada":"2024"
 }

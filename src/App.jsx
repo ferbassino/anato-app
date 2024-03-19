@@ -78,23 +78,26 @@ function App() {
         email,
         password,
       });
-
       if (data) {
-        setProfile(data);
-        if (data.user.roles === "admin") {
-          navigate("/home");
-          setLoading(false);
-        }
-        if (data.user.roles === "reader") {
-          setCanActivate(true);
-          navigate("/home");
-          setLoading(false);
-        }
-
-        setPassword("");
-        setEmail("");
         setLoading(false);
-      } else {
+        navigate("/home");
+      }
+      // if (data) {
+      //   setProfile(data);
+      //   if (data.user.roles === "admin") {
+      //     navigate("/home");
+      //     setLoading(false);
+      //   }
+      //   if (data.user.roles === "reader") {
+      //     setCanActivate(true);
+      //     navigate("/home");
+      //     setLoading(false);
+      //   }
+
+      //   setPassword("");
+      //   setEmail("");
+      //   setLoading(false);
+      else {
         alert("Email o password incorrectos");
         setPassword("");
         setEmail("");
