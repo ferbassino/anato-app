@@ -1,0 +1,41 @@
+table {
+  table-layout: fixed;
+  /* width: 100%; */
+  border-collapse: collapse;
+  border: 1px solid #000000;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+th, td {
+   text-align: left;
+   vertical-align: top;
+   border: 1px solid #000; 
+   padding-left: 3px;
+   padding-right: 3px;
+   font-size: 10px;
+}
+caption{
+    font-size: 12px;
+    text-align: left;
+   vertical-align: top;
+   border: 1px solid #000; 
+   
+}
+
+#titulo{
+    flex-direction: row;
+    font-size: 12px;
+    font-weight: bold;
+    
+}
+
+span{
+    
+    padding-left: 3px;
+   padding-right: 3px;
+}
+.tableContainer{
+   display: flex;
+  justify-content: center;
+}
