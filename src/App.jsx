@@ -73,36 +73,34 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // setLoading(true);
+      setLoading(true);
       const data = await login({
         email,
         password,
       });
-
       if (data) {
-        // setProfile(data);
+        setProfile(data);
         if (data.user.roles === "admin") {
           navigate("/home");
-          // setLoading(false);
+          setLoading(false);
         }
         if (data.user.roles === "reader") {
           setCanActivate(true);
           navigate("/home");
-          // setLoading(false);
+          setLoading(false);
         }
-
         setPassword("");
         setEmail("");
-        // setLoading(false);
+        setLoading(false);
       } else {
         alert("Email o password incorrectos");
         setPassword("");
         setEmail("");
-        // setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       alert("ocurrió un error, vuelva a intentarlo mas tarde");
-      // setLoading(false);
+      setLoading(false);
       console.log(error);
     }
   };
