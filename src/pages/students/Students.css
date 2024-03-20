@@ -39,3 +39,29 @@ span{
    display: flex;
   justify-content: center;
 }
+
+.numero,.apellido{
+   background-color: #000;
+   color: white;
+}
+.T,.P,.N{
+   background-color: #969696;
+   color: white;
+}
+.C{
+   color: white;
+}
+.catedra{
+   margin-left: 10%;
+}
+.titulo-cursiva{
+   font-size: 12px;
+   font-style: italic;
+}
+.apellido-nombre{
+   text-align: left;
+}
+.vista-buton-container{
+   display: flex;
+   flex-direction: row;
+}

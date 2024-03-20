@@ -14,6 +14,8 @@ const Students = () => {
   const [loading, setLoading] = useState(false);
   const [listaVisible, setListaVisible] = useState(false);
   const [currentDate, setCurrentDate] = useState("");
+  const [vistaExamenVisible, setVistaExamenVisible] = useState(false);
+  const [vistaDniVisible, setVistaDniVisible] = useState(false);
   const navigate = useNavigate();
   const navigation = [
     { name: "Lista general", href: "#", current: true },
@@ -36,7 +38,7 @@ const Students = () => {
   const date = new Date();
 
   useEffect(() => {
-    setCurrentDate(date.toLocaleDateString());
+    setCurrentDate(date.getFullYear());
   }, []);
 
   const mostrarLista = async (e) => {
@@ -87,6 +89,14 @@ const Students = () => {
   //   getStudents();
   // }, []);
 
+  const handleVistaDni = () => {
+    setVistaDniVisible(true);
+    setVistaExamenVisible(false);
+  };
+  const handleVistaExamen = () => {
+    setVistaDniVisible(false);
+    setVistaExamenVisible(true);
+  };
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
@@ -156,36 +166,54 @@ const Students = () => {
           </>
         )}
       </Disclosure>
+      <div className="vista-buton-container">
+        <button
+          onClick={handleVistaDni}
+          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+        >
+          Vista DNI
+        </button>
+        <button
+          onClick={handleVistaExamen}
+          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+        >
+          Vista exámen
+        </button>
+      </div>
 
       {listaVisible ? (
-        <div className="tableContainer">
-          <table summary="">
-            <caption>
-              <span id="titulo">Comisión: {comisionActual}</span>
-              <span>{total} alumnos</span>
-              <span>Impresion: {currentDate}</span>
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Orden</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Nombres</th>
-                <th scope="col">DNI</th>
-              </tr>
-            </thead>
-            <tbody>
-              {studentsArray.map((el, index) => (
-                <tr key={el._id}>
-                  <td>{index + 1}</td>
+        <>
+          {vistaDniVisible ? (
+            <>
+              {" "}
+              <div className="tableContainer">
+                <table summary="">
+                  <caption>
+                    <span id="titulo">Comisión: {comisionActual}</span>
+                    <span>{total} alumnos</span>
+                    <span>Impresion: {currentDate}</span>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Orden</th>
+                      <th scope="col">Apellido</th>
+                      <th scope="col">Nombres</th>
+                      <th scope="col">DNI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentsArray.map((el, index) => (
+                      <tr key={el._id}>
+                        <td>{index + 1}</td>
 
-                  <td>{el.apellido}</td>
-                  <td>{el.nombres}</td>
-                  <td>{el.dni}</td>
-                </tr>
-              ))}
-            </tbody>
+                        <td>{el.apellido}</td>
+                        <td>{el.nombres}</td>
+                        <td>{el.dni}</td>
+                      </tr>
+                    ))}
+                  </tbody>
 
-            {/* <tfoot>
+                  {/* <tfoot>
             <tr>
               <th scope="row" colSpan="2">
                 Número total de álbumes
@@ -193,8 +221,124 @@ const Students = () => {
               <td colSpan="2">77</td>
             </tr>
           </tfoot> */}
-          </table>
-        </div>
+                </table>
+              </div>
+            </>
+          ) : null}
+          {vistaExamenVisible ? (
+            <>
+              <div className="catedra ">
+                <h1 className="titulo-cursiva">CÁTEDRA DE ANATOMÍA</h1>
+                <h1 className="titulo-cursiva">
+                  ESCUELA DE KINESIOLOGÍA Y FISIATÍA
+                </h1>
+                <h1 className="titulo-cursiva">U.B.A.</h1>
+              </div>
+              <div className="tableContainer">
+                <table summary="">
+                  <caption className="ano-comision">
+                    <span>AÑO {currentDate}</span>
+                    <span id="titulo">COMISIÓN {comisionActual.slice(4)}</span>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th className="numero" scope="col">
+                        N°
+                      </th>
+                      <th className="apellido" scope="col">
+                        Apellido y Nombre
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="N" scope="col">
+                        N
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="N" scope="col">
+                        N
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="T" scope="col">
+                        T
+                      </th>
+                      <th className="P" scope="col">
+                        P
+                      </th>
+                      <th className="N" scope="col">
+                        N
+                      </th>
+                      <th className="C" scope="col">
+                        C
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentsArray.map((el, index) => (
+                      <tr key={el._id}>
+                        <td>{index + 1}</td>
+
+                        <td className="apellido-nombre">
+                          {el.apellido}, {el.nombres}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="N"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="N"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td className="N"></td>
+                        <td></td>
+                      </tr>
+                    ))}
+                  </tbody>
+
+                  {/* <tfoot>
+            <tr>
+              <th scope="row" colSpan="2">
+                Número total de álbumes
+              </th>
+              <td colSpan="2">77</td>
+            </tr>
+          </tfoot> */}
+                </table>
+              </div>
+            </>
+          ) : null}
+        </>
       ) : null}
       {loading ? (
         <div
