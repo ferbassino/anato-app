@@ -93,13 +93,13 @@ function App() {
         setEmail("");
         setLoading(false);
       } else {
-        alert("Email o password incorrectos");
+        alert("que mal!!! Email o password incorrectos");
         setPassword("");
         setEmail("");
         setLoading(false);
       }
     } catch (error) {
-      alert("ocurrió un error, vuelva a intentarlo mas tarde");
+      alert("ocurrió un error, volvé a intentarlo mas tarde");
       setLoading(false);
       console.log(error);
     }

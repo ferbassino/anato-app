@@ -35,23 +35,37 @@ const CambioDeComision = () => {
     if (dNI1.length !== 8) {
       alert("el DNI debe tener 8 números");
     }
+    const array1 = [];
     currentsStudents.map((el) => {
       if (el.dni === dNI1) {
         setAlumno1(el);
+        array1.push(el);
         setAlumno1Visible(true);
       }
     });
+    if (array1.length === 0) {
+      alert(
+        "El DNI del primer alumno no existe, un bajón, chequealo y volvé a intentarlo!!!"
+      );
+    }
   };
+
   const handleAlumno2 = (e) => {
     e.preventDefault();
+    const array2 = [];
     currentsStudents.map((el) => {
       if (el.dni === dNI2) {
         setAlumno2(el);
+        array2.push(el);
         setAlumno2Visible(true);
       }
     });
+    if (array2.length === 0) {
+      alert(
+        "El DNI del segundo alumno no existe, chequealo y volvé a intentarlo"
+      );
+    }
   };
-
   const cambiarComision = () => {
     setLoading(true);
     // id alumno 1, comision de alumno 2
@@ -63,7 +77,7 @@ const CambioDeComision = () => {
         if (response.data.success) {
           setLoading(false);
           alert(
-            `${response.data.student.apellido}, ${response.data.student.nombres} paso a la comisión ${response.data.student.comision} con exito`
+            `Bien ahí!!! ${response.data.student.apellido}, ${response.data.student.nombres} paso a la comisión ${response.data.student.comision}.`
           );
         }
       })
@@ -80,7 +94,7 @@ const CambioDeComision = () => {
         if (response.data.success) {
           setLoading(false);
           alert(
-            `${response.data.student.apellido}, ${response.data.student.nombres} paso a la comisión ${response.data.student.comision} con exito`
+            `Excelente ${response.data.student.apellido}, ${response.data.student.nombres} paso a la comisión ${response.data.student.comision} lo mas pancho`
           );
           setDNI1("");
           setDNI2("");
@@ -174,6 +188,9 @@ const CambioDeComision = () => {
                       </tbody>
                     </table>
                   </div>
+                  <button className="button" type="button" onClick={cancelar}>
+                    cancelar
+                  </button>
                   <p>
                     2. Ingrese el dni del segundo alumno y hacer clik en enviar
                     para buscarlo
