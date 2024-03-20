@@ -13,9 +13,9 @@ import CargarAlumnos from "./carga_de_datos/CargarAlumnos";
 import HomeComponent from "../components/HomeComponent";
 
 const Home = ({ handleLogout }) => {
-  const [listasVisible, setListasVisible] = useState(true);
+  const [listasVisible, setListasVisible] = useState(false);
   const [crearAlumnoVisible, setCrearAlumnoVisible] = useState(false);
-  const [cambioVisible, setCambioVisible] = useState(false);
+  const [cambioVisible, setCambioVisible] = useState(true);
   const [homeVisible, setHomeVisible] = useState(false);
   const handleLogin = () => {
     setVisible(true);
