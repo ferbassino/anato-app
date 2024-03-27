@@ -68,3 +68,7 @@ background-color: #04AA6D; /* Green */
     margin: 20px;
     text-align: center;
 }
+
+.apellido-nombre{
+    font-size: 1rem;
+}

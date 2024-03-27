@@ -53,6 +53,11 @@ const CambioDeComision = () => {
   const handleAlumno2 = (e) => {
     e.preventDefault();
     const array2 = [];
+    if (dNI1 === dNI2) {
+      alert("el DNI ingresado es igual al DIN 1");
+      setDNI2("");
+      return;
+    }
     currentsStudents.map((el) => {
       if (el.dni === dNI2) {
         setAlumno2(el);
@@ -142,128 +147,157 @@ const CambioDeComision = () => {
           </div>
         ) : (
           <>
-            <h2>Cambio de comisión</h2>
-            <p>
-              Para realizar el cambio de comisión se debe contar con los dni de
-              los dos alumnos interesados en el cambio
-            </p>
-            <p>
-              1. Ingresar el DNI del primer alumno y hacer clik en enviar para
-              buscarlo
-            </p>
+            <div className="flex w-full justify-center items-end">
+              <div className="relative mr-4 lg:w-full xl:w-1/2  md:w-full text-left">
+                <h2 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
+                  Cambio de comisión
+                </h2>
+                <p>
+                  Para realizar el cambio de comisión se debe contar con los dni
+                  de los dos alumnos interesados en el cambio
+                </p>
+                <p>
+                  1. Ingresar el DNI del primer alumno y hacer clik en enviar
+                  para buscarlo
+                </p>
+              </div>
+            </div>
             <form onSubmit={handleAlumno1}>
-              <div className="dni1">
-                <label>
-                  DNI:{" "}
-                  <input
-                    value={dNI1}
-                    type="number"
-                    onChange={(e) => setDNI1(e.target.value)}
-                  />
-                </label>
+              <div className="flex w-full justify-center ">
+                <div className="relative mr-4  xl:w-1/2   text-left">
+                  <label>
+                    DNI:{" "}
+                    <input
+                      value={dNI1}
+                      type="number"
+                      onChange={(e) => setDNI1(e.target.value)}
+                      className="w-full bg-gray-100 bg-opacity-50 rounded focus:ring-2 focus:ring-blue-200 focus:bg-transparent border border-gray-300 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    />
+                  </label>
 
-                <input className="input-dni1" type="submit" value="Enviar" />
+                  <input
+                    className="my-2  inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                    type="submit"
+                    value="Enviar"
+                  />
+                </div>
               </div>
             </form>
             <div>
               {alumno1Visible ? (
                 <>
-                  <div>
-                    <p>Datos del alumno 1</p>
-                    <table>
-                      <colgroup span="4" className="columns"></colgroup>
-                      <thead>
-                        <tr>
-                          <th>Apellido</th>
-                          <th>Nombres</th>
-                          <th>Comisión</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{alumno1.apellido}</td>
-                          <td>{alumno1.nombres}</td>
-                          <td>{alumno1.comision}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <button className="button" type="button" onClick={cancelar}>
-                    cancelar
-                  </button>
-                  <p>
-                    2. Ingrese el dni del segundo alumno y hacer clik en enviar
-                    para buscarlo
-                  </p>
-                  <form onSubmit={handleAlumno2}>
-                    <div className="dni1">
-                      <label>
-                        DNI:{" "}
-                        <input
-                          value={dNI2}
-                          type="number"
-                          onChange={(e) => setDNI2(e.target.value)}
-                        />
-                      </label>
-                      <input type="submit" value="Enviar" />
-                    </div>
-                  </form>
-                  {alumno2Visible ? (
-                    <>
-                      <p>Datos del alumno 2</p>
-                      <table>
-                        <colgroup span="4" className="columns"></colgroup>
-                        <thead>
-                          <tr>
-                            <th>Apellido</th>
-                            <th>Nombres</th>
-                            <th>Comisión</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>{alumno2.apellido}</td>
-                            <td>{alumno2.nombres}</td>
-                            <td>{alumno2.comision}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div className="advertencia_Container">
-                        <h1>Confirme los datos:</h1>
-                        <h3>
-                          {alumno1.apellido}, {alumno1.nombres} de la comisión{" "}
-                          {alumno1.comision} va a pasar a la comisión{" "}
-                          {alumno2.comision}
-                        </h3>
-                        <h3>
-                          Y {alumno2.apellido}, {alumno2.nombres} de la comisión{" "}
-                          {alumno2.comision} va a pasar a la comisión{" "}
-                          {alumno1.comision}
-                        </h3>
+                  <div className="flex  justify-center items-end">
+                    <div className="relative mr-4  xl:w-1/2  md:w-full text-left">
+                      <div>
+                        <p>Datos del alumno 1</p>
+                        <table>
+                          <colgroup span="4" className="columns"></colgroup>
+                          <thead>
+                            <tr>
+                              <th>Apellido</th>
+                              <th>Nombres</th>
+                              <th>Comisión</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{alumno1.apellido}</td>
+                              <td>{alumno1.nombres}</td>
+                              <td>{alumno1.comision}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
+                      <button
+                        className="my-2 mx-3 inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                        type="button"
+                        onClick={cancelar}
+                      >
+                        cancelar
+                      </button>
                       <p>
-                        3. Una vez confirmado los datos hacer clik en "cambiar"
-                        para realizar el cambio de comisión o "cancelar para
-                        resetear el formulario"
+                        2. Ingrese el dni del segundo alumno y hacer clik en
+                        enviar para buscarlo
                       </p>
-                      <div className="button-container">
-                        <button
-                          className="button"
-                          type="button"
-                          onClick={cambiarComision}
-                        >
-                          cambiar
-                        </button>
-                        <button
-                          className="button"
-                          type="button"
-                          onClick={cancelar}
-                        >
-                          cancelar
-                        </button>
-                      </div>
-                    </>
-                  ) : null}
+
+                      <form onSubmit={handleAlumno2}>
+                        <div className="flex w-full justify-center items-end">
+                          <div className="relative mr-4  xl:w-1/2 w-2/4 md:w-full text-left">
+                            <label>
+                              DNI:{" "}
+                              <input
+                                className="w-full bg-gray-100 bg-opacity-50 rounded focus:ring-2 focus:ring-blue-200 focus:bg-transparent border border-gray-300 focus:border-blue-500 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                value={dNI2}
+                                type="number"
+                                onChange={(e) => setDNI2(e.target.value)}
+                              />
+                            </label>
+                            <input
+                              className="my-2  inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                              type="submit"
+                              value="Enviar"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                      {alumno2Visible ? (
+                        <>
+                          <p>Datos del alumno 2</p>
+                          <table>
+                            <colgroup span="4" className="columns"></colgroup>
+                            <thead>
+                              <tr>
+                                <th>Apellido</th>
+                                <th>Nombres</th>
+                                <th>Comisión</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>{alumno2.apellido}</td>
+                                <td>{alumno2.nombres}</td>
+                                <td>{alumno2.comision}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <div className="advertencia_Container">
+                            <h1>Confirme los datos:</h1>
+                            <h3>
+                              {alumno1.apellido}, {alumno1.nombres} de la
+                              comisión {alumno1.comision} va a pasar a la
+                              comisión {alumno2.comision}
+                            </h3>
+                            <h3>
+                              Y {alumno2.apellido}, {alumno2.nombres} de la
+                              comisión {alumno2.comision} va a pasar a la
+                              comisión {alumno1.comision}
+                            </h3>
+                          </div>
+                          <p>
+                            3. Una vez confirmado los datos hacer clik en
+                            "cambiar" para realizar el cambio de comisión o
+                            "cancelar para resetear el formulario"
+                          </p>
+                          <div className="button-container">
+                            <button
+                              className="my-2  inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                              type="button"
+                              onClick={cambiarComision}
+                            >
+                              cambiar
+                            </button>
+                            <button
+                              className="my-2  inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                              type="button"
+                              onClick={cancelar}
+                            >
+                              cancelar
+                            </button>
+                          </div>
+                        </>
+                      ) : null}
+                    </div>
+                  </div>
                 </>
               ) : null}
             </div>{" "}

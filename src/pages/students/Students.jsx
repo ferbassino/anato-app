@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./Students.css";
 import client from "../../api/client";
 import { Fragment } from "react";
@@ -6,6 +6,9 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
+import { Document, Page, View, PDFViewer } from "@react-pdf/renderer";
+import { useReactToPrint, ReactToPrint } from "react-to-print";
+
 const Students = () => {
   const [studentsArray, setStudentsArray] = useState([]);
   const [lista, setLista] = useState("");
@@ -16,7 +19,12 @@ const Students = () => {
   const [currentDate, setCurrentDate] = useState("");
   const [vistaExamenVisible, setVistaExamenVisible] = useState(false);
   const [vistaDniVisible, setVistaDniVisible] = useState(false);
+  const [vistaPdfVisible, setVistaPdfVisible] = useState(false);
+  const [comisionEnVistaGeneralVisible, setComisionEnVistaGeneralVisible] =
+    useState(false);
+  const conponentPDF = useRef();
   const navigate = useNavigate();
+
   const navigation = [
     { name: "Lista general", href: "#", current: true },
     { name: "com-01", href: "#", current: false },
@@ -43,6 +51,7 @@ const Students = () => {
 
   const mostrarLista = async (e) => {
     try {
+      setVistaDniVisible(true);
       setLoading(true);
       setListaVisible(false);
       setComisionActual(e);
@@ -50,6 +59,11 @@ const Students = () => {
       const students = await client.get("api/student");
 
       if (students) {
+        if (e === "Lista general") {
+          setComisionEnVistaGeneralVisible(true);
+        } else {
+          setComisionEnVistaGeneralVisible(false);
+        }
         students.data.students.map((el) => {
           if (e === `com-${el.comision}`) {
             listaActual.push(el);
@@ -92,10 +106,21 @@ const Students = () => {
   const handleVistaDni = () => {
     setVistaDniVisible(true);
     setVistaExamenVisible(false);
+    setVistaPdfVisible(false);
   };
   const handleVistaExamen = () => {
     setVistaDniVisible(false);
     setVistaExamenVisible(true);
+    setVistaPdfVisible(false);
+  };
+  const handleVistaPdf = () => {
+    setVistaDniVisible(false);
+    setVistaExamenVisible(false);
+    setVistaPdfVisible(true);
+  };
+
+  const handleStudent = (id) => {
+    navigate(`/vista-alumno/${id}`);
   };
   return (
     <div>
@@ -166,36 +191,54 @@ const Students = () => {
           </>
         )}
       </Disclosure>
-      <div className="vista-buton-container">
-        <button
-          onClick={handleVistaDni}
-          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-        >
-          Vista DNI
-        </button>
-        <button
-          onClick={handleVistaExamen}
-          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-        >
-          Vista exámen
-        </button>
-      </div>
 
       {listaVisible ? (
         <>
+          <div className="vista-buton-container">
+            <button
+              onClick={handleVistaDni}
+              className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+            >
+              Vista DNI
+            </button>
+            {/* <button
+              onClick={handleVistaExamen}
+              className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+            >
+              Vista exámen
+            </button> */}
+
+            <ReactToPrint
+              trigger={() => (
+                <button className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm">
+                  Imprimir
+                </button>
+              )}
+              content={() => conponentPDF.current}
+              pageStyle="@page { size: auto;  margin: 20mm }"
+            />
+            {/* <button
+              onClick={generatePDF}
+              className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+            >
+              Generar PDF
+            </button> */}
+          </div>
           {vistaDniVisible ? (
-            <>
-              {" "}
+            <div ref={conponentPDF}>
               <div className="tableContainer">
                 <table summary="">
                   <caption>
                     <span id="titulo">Comisión: {comisionActual}</span>
                     <span>{total} alumnos</span>
-                    <span>Impresion: {currentDate}</span>
+                    {/* <span>Impresion: {currentDate}</span> */}
                   </caption>
                   <thead>
                     <tr>
-                      <th scope="col">Orden</th>
+                      <th scope="col"></th>
+                      {comisionEnVistaGeneralVisible ? (
+                        <th scope="col">Com</th>
+                      ) : null}
                       <th scope="col">Apellido</th>
                       <th scope="col">Nombres</th>
                       <th scope="col">DNI</th>
@@ -203,39 +246,38 @@ const Students = () => {
                   </thead>
                   <tbody>
                     {studentsArray.map((el, index) => (
-                      <tr key={el._id}>
-                        <td>{index + 1}</td>
-
-                        <td>{el.apellido}</td>
-                        <td>{el.nombres}</td>
-                        <td>{el.dni}</td>
+                      <tr
+                        key={el._id}
+                        onClick={() => {
+                          handleStudent(el._id);
+                        }}
+                        className="hover:bg-blue-400 cursor-pointer"
+                      >
+                        <td className="apellido-nombre">{index + 1}</td>
+                        {comisionEnVistaGeneralVisible ? (
+                          <td className="apellido-nombre">{el.comision}</td>
+                        ) : null}
+                        <td className="apellido-nombre">{el.apellido}</td>
+                        <td className="apellido-nombre">{el.nombres}</td>
+                        <td className="apellido-nombre">{el.dni}</td>
                       </tr>
                     ))}
                   </tbody>
-
-                  {/* <tfoot>
-            <tr>
-              <th scope="row" colSpan="2">
-                Número total de álbumes
-              </th>
-              <td colSpan="2">77</td>
-            </tr>
-          </tfoot> */}
                 </table>
               </div>
-            </>
+            </div>
           ) : null}
           {vistaExamenVisible ? (
-            <>
-              <div className="catedra ">
-                <h1 className="titulo-cursiva">CÁTEDRA DE ANATOMÍA</h1>
-                <h1 className="titulo-cursiva">
-                  ESCUELA DE KINESIOLOGÍA Y FISIATÍA
-                </h1>
-                <h1 className="titulo-cursiva">U.B.A.</h1>
-              </div>
+            <div ref={conponentPDF}>
+              <div className="catedra "></div>
               <div className="tableContainer">
                 <table summary="">
+                  <caption>
+                    <h1 className="titulo-cursiva">CÁTEDRA DE ANATOMÍA</h1>
+                    {/* <h1 className="titulo-cursiva"> */}
+                    <h1>ESCUELA DE KINESIOLOGÍA Y FISIATÍA</h1>
+                    <h1 className="titulo-cursiva">U.B.A.</h1>
+                  </caption>
                   <caption className="ano-comision">
                     <span>AÑO {currentDate}</span>
                     <span id="titulo">COMISIÓN {comisionActual.slice(4)}</span>
@@ -325,18 +367,49 @@ const Students = () => {
                       </tr>
                     ))}
                   </tbody>
-
-                  {/* <tfoot>
-            <tr>
-              <th scope="row" colSpan="2">
-                Número total de álbumes
-              </th>
-              <td colSpan="2">77</td>
-            </tr>
-          </tfoot> */}
                 </table>
               </div>
-            </>
+            </div>
+          ) : null}
+          {vistaPdfVisible ? (
+            <div ref={conponentPDF}>
+              <div className="tableContainer">
+                <table summary="">
+                  <caption>
+                    <span id="titulo">Comisión: {comisionActual}</span>
+                    <span>{total} alumnos</span>
+                    {/* <span>Impresion: {currentDate}</span> */}
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col">Com</th>
+                      <th scope="col">Apellido</th>
+                      <th scope="col">Nombres</th>
+                      <th scope="col">DNI</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {studentsArray.map((el, index) => (
+                      <tr
+                        key={el._id}
+                        onClick={() => {
+                          handleStudent(el._id);
+                        }}
+                        className="hover:bg-blue-400 cursor-pointer"
+                      >
+                        <td className="apellido-nombre">{index + 1}</td>
+                        <td className="apellido-nombre">{el.comision}</td>
+
+                        <td className="apellido-nombre">{el.apellido}</td>
+                        <td className="apellido-nombre">{el.nombres}</td>
+                        <td className="apellido-nombre">{el.dni}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           ) : null}
         </>
       ) : null}

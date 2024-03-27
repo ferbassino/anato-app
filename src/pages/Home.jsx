@@ -6,17 +6,14 @@ import { Link, Route, Routes } from "react-router-dom";
 import Students from "./students/Students";
 import CambioDeComision from "./CambioDeComision";
 import CrearAlumno from "./CrearAlumno";
-import ImprimirLista from "./ImprimirLista";
-import logout from "../services/logout";
-import ProtectedRoute from "../components/utils/ProtectedRoute";
-import CargarAlumnos from "./carga_de_datos/CargarAlumnos";
-import HomeComponent from "../components/HomeComponent";
+import BuscarAlumno from "./BuscarAlumno";
 
 const Home = ({ handleLogout }) => {
   const [listasVisible, setListasVisible] = useState(false);
   const [crearAlumnoVisible, setCrearAlumnoVisible] = useState(false);
   const [cambioVisible, setCambioVisible] = useState(true);
   const [homeVisible, setHomeVisible] = useState(false);
+  const [buscarVisible, setBuscarVisible] = useState(false);
   const handleLogin = () => {
     setVisible(true);
   };
@@ -31,28 +28,40 @@ const Home = ({ handleLogout }) => {
     return classes.filter(Boolean).join(" ");
   }
   const handleCrear = () => {
-    setHomeVisible(false);
-    setCrearAlumnoVisible(true);
-    setListasVisible(false);
-    setCambioVisible(false);
+    alert("esta opción está deshabilitada");
+    // setHomeVisible(false);
+    // setCrearAlumnoVisible(true);
+    // setListasVisible(false);
+    // setCambioVisible(false);
+    // setBuscarVisible(false);
   };
   const handleListas = () => {
     setHomeVisible(false);
     setCrearAlumnoVisible(false);
     setListasVisible(true);
     setCambioVisible(false);
+    setBuscarVisible(false);
   };
   const handleCambio = () => {
     setHomeVisible(false);
     setCrearAlumnoVisible(false);
     setListasVisible(false);
     setCambioVisible(true);
+    setBuscarVisible(false);
   };
   const handleHome = () => {
     setHomeVisible(true);
     setCrearAlumnoVisible(false);
     setListasVisible(false);
     setCambioVisible(false);
+    setBuscarVisible(false);
+  };
+  const handSearch = () => {
+    setHomeVisible(false);
+    setCrearAlumnoVisible(false);
+    setListasVisible(false);
+    setCambioVisible(false);
+    setBuscarVisible(true);
   };
 
   return (
@@ -106,7 +115,6 @@ const Home = ({ handleLogout }) => {
                           Listas
                         </button>
                         <button
-                          disabled
                           onClick={handleCrear}
                           className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
                         >
@@ -117,6 +125,12 @@ const Home = ({ handleLogout }) => {
                           className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
                         >
                           Cambio de comisión
+                        </button>
+                        <button
+                          onClick={handSearch}
+                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+                        >
+                          Buscar Alumno
                         </button>
                       </div>
                     </div>
@@ -172,6 +186,11 @@ const Home = ({ handleLogout }) => {
       {listasVisible ? (
         <>
           <Students />
+        </>
+      ) : null}
+      {buscarVisible ? (
+        <>
+          <BuscarAlumno />
         </>
       ) : null}
       {crearAlumnoVisible ? (

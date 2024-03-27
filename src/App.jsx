@@ -15,6 +15,8 @@ import ProtectedAdminRoute from "./components/utils/ProtectedAdminRoute";
 import AdminPanel from "./pages/AdminPanel";
 import client from "./api/client";
 import ClipLoader from "react-spinners/ClipLoader";
+import StudentView from "./components/StudentView";
+import VistaDniWeb from "./pages/vistasLista/VistaDniWeb";
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -149,6 +151,8 @@ function App() {
               />
               <Route path="/listas" element={<Students />} />
               <Route path="/crear-alumno" element={<CrearAlumno />} />
+              <Route path="/vista-alumno/:id" element={<StudentView />} />
+              <Route path="/vista-dni-web/:id" element={<VistaDniWeb />} />
               <Route
                 path="/cambio-de-comision"
                 element={<CambioDeComision />}
