@@ -22,6 +22,7 @@ const Home = ({ handleLogout }) => {
     { name: "Listas", to: "/listas", current: true },
     { name: "Gestionar alumno", to: "/crear-alumno", current: true },
     { name: "Cambio de comisión", to: "/cambio-de-comision", current: true },
+
     // { name: "Imprimir lista", to: "/imprimir-lista", current: true },
   ];
   function classNames(...classes) {
@@ -170,6 +171,12 @@ const Home = ({ handleLogout }) => {
                   >
                     Cambio de comisión
                   </button>
+                  <button
+                    onClick={handSearch}
+                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
+                  >
+                    Buscar Alumno
+                  </button>
                 </div>
               </Disclosure.Panel>
             </>
@@ -185,6 +192,7 @@ const Home = ({ handleLogout }) => {
       ) : null} */}
       {listasVisible ? (
         <>
+          <h1>Seleccionar lista general o comisión</h1>
           <Students />
         </>
       ) : null}
