@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import client from "../api/client";
 import "./CrearAlumno.css";
@@ -19,7 +19,31 @@ const CrearAlumno = () => {
   const [alumnoEliminarVisible, setAlumnoEliminarVisible] = useState(false);
   const [studenId, setStudentId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [students, setStudents] = useState([]);
 
+  useEffect(() => {
+    try {
+      const getAllStudents = async () => {
+        const response = await client.get("/api/student");
+        if (response.data.success) {
+          setStudents(response.data.students);
+        }
+      };
+      getAllStudents();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  students.map((el) => {
+    if (el.apellido == "ALVAREZ") {
+      console.log(el);
+    }
+  });
+
+  // console.log(students);
+
+  console.log(apellido);
   const handleCreate = async () => {
     try {
       setLoading(true);
@@ -600,6 +624,26 @@ const CrearAlumno = () => {
                             type="text"
                             id="dni"
                             name="dni"
+                            className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-blue-900 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                          />
+                        </div>
+                      </div>
+                      <div className="p-2 ">
+                        <div className="relative">
+                          <label
+                            htmlFor="name"
+                            className="leading-7 text-sm text-gray-600"
+                          >
+                            Apellido
+                          </label>
+
+                          {/* ************************************* */}
+                          <input
+                            onChange={(e) => setApellido(e.target.value)}
+                            value={apellido}
+                            type="text"
+                            id="apellido"
+                            name="apellido"
                             className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-blue-900 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                           />
                         </div>

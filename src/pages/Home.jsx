@@ -9,9 +9,9 @@ import CrearAlumno from "./CrearAlumno";
 import BuscarAlumno from "./BuscarAlumno";
 
 const Home = ({ handleLogout }) => {
-  const [listasVisible, setListasVisible] = useState(false);
+  const [listasVisible, setListasVisible] = useState(true);
   const [crearAlumnoVisible, setCrearAlumnoVisible] = useState(false);
-  const [cambioVisible, setCambioVisible] = useState(true);
+  const [cambioVisible, setCambioVisible] = useState(false);
   const [homeVisible, setHomeVisible] = useState(false);
   const [buscarVisible, setBuscarVisible] = useState(false);
   const handleLogin = () => {
