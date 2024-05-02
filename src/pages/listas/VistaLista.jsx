@@ -3,6 +3,7 @@ import "./VistaLista.css";
 import { useReactToPrint } from "react-to-print";
 import { getAllStudents } from "../../services/studentsServices";
 import { ClipLoader } from "react-spinners";
+import client from "../../api/client";
 
 const VistaLista = ({ comision, handleListaVisible }) => {
   const [comisionEnVistaGeneralVisible, setComisionEnVistaGeneralVisible] =
@@ -11,6 +12,101 @@ const VistaLista = ({ comision, handleListaVisible }) => {
   const [vistaPdfVisible, setVistaPdfVisible] = useState([]);
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [consición, setCondicion] = useState("");
+
+  const handleDelete = async (el) => {
+    if (el.roles === "student") {
+      try {
+        setLoading(true);
+        const response = await client.put(`api/student/${el._id}`, {
+          roles: "libre",
+        });
+        if (response.data.success) {
+          const response = await client.get(`api/student/${el._id}`);
+          const students = await getAllStudents();
+          if (students) {
+            setStudents(students);
+            const listaActual = [];
+            if (comision === "general") {
+              setComisionEnVistaGeneralVisible(true);
+            } else {
+              setComisionEnVistaGeneralVisible(false);
+            }
+            students.map((el) => {
+              if (comision === el.comision) {
+                listaActual.push(el);
+              } else if (comision === "general") {
+                listaActual.push(el);
+              }
+            });
+
+            listaActual.sort((a, b) => {
+              if (a.apellido < b.apellido) {
+                return -1;
+              }
+              if (a.apellido > b.apellido) {
+                return 1;
+              }
+              return 0;
+            });
+            setCurrentStudents(listaActual);
+            setLoading(false);
+          }
+        }
+      } catch (error) {
+        alert("ocurrió un error vuelva a intentarlo mas tarde");
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (el.roles === "libre") {
+      try {
+        setLoading(true);
+        const response = await client.put(`api/student/${el._id}`, {
+          roles: "student",
+        });
+        if (response.data.success) {
+          const response = await client.get(`api/student/${el._id}`);
+          const students = await getAllStudents();
+          if (students) {
+            setStudents(students);
+            const listaActual = [];
+            if (comision === "general") {
+              setComisionEnVistaGeneralVisible(true);
+            } else {
+              setComisionEnVistaGeneralVisible(false);
+            }
+            students.map((el) => {
+              if (comision === el.comision) {
+                listaActual.push(el);
+              } else if (comision === "general") {
+                listaActual.push(el);
+              }
+            });
+
+            listaActual.sort((a, b) => {
+              if (a.apellido < b.apellido) {
+                return -1;
+              }
+              if (a.apellido > b.apellido) {
+                return 1;
+              }
+              return 0;
+            });
+            setCurrentStudents(listaActual);
+            setLoading(false);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     const currentsStudents = async () => {
       setLoading(true);
@@ -24,9 +120,9 @@ const VistaLista = ({ comision, handleListaVisible }) => {
           setComisionEnVistaGeneralVisible(false);
         }
         students.map((el) => {
-          if (comision === el.comision && el.roles === "student") {
+          if (comision === el.comision) {
             listaActual.push(el);
-          } else if (comision === "general" && el.roles === "student") {
+          } else if (comision === "general") {
             listaActual.push(el);
           }
         });
@@ -108,6 +204,7 @@ const VistaLista = ({ comision, handleListaVisible }) => {
                     <th scope="col">Apellido</th>
                     <th scope="col">Nombres</th>
                     <th scope="col">DNI</th>
+                    <th scope="col">cond</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -126,6 +223,9 @@ const VistaLista = ({ comision, handleListaVisible }) => {
                       <td className="apellido-nombre">{el.apellido}</td>
                       <td className="apellido-nombre">{el.nombres}</td>
                       <td className="apellido-nombre">{el.dni}</td>
+                      <td onClick={(e) => handleDelete(el)}>
+                        {el.roles === "student" ? "Reg" : "Lib"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

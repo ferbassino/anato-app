@@ -238,7 +238,7 @@ const GeneralSummary = () => {
       ) : (
         <>
           <table>
-            <caption>Table Caption</caption>
+            <caption>Visión general</caption>
             <thead>
               <tr>
                 <th>Com.</th>
