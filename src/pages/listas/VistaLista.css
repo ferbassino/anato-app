@@ -1,10 +1,9 @@
 table {
   table-layout: fixed;
-  /* width: 100%; */
   border-collapse: collapse;
   border: 1px solid #000000;
-  margin-left: 50px;
-  margin-top: 20px;
+  
+  
 }
 
 th, td {
@@ -13,32 +12,27 @@ th, td {
    border: 1px solid #000; 
    padding-left: 3px;
    padding-right: 3px;
-   font-size: 10px;
+   font-size: 16px;
 }
 caption{
-    font-size: 12px;
-    text-align: left;
+   padding:5px ;
+    font-size: 20px;
+    text-align: center;
    vertical-align: top;
    border: 1px solid #000; 
    
 }
-
-/* #titulo{
-    flex-direction: row;
-    font-size: 12px;
-    font-weight: bold;
+.tableContainer{
+   display: flex;
+   justify-content: center;
+  
    
-    
-} */
+}
 
 span{
     
     padding-left: 3px;
    padding-right: 3px;
-}
-.tableContainer{
-   display: flex;
-  justify-content: center;
 }
 
 .numero,.apellido{
@@ -65,4 +59,40 @@ span{
 .vista-buton-container{
    display: flex;
    flex-direction: row;
+}
+.comisiones-imprimir{
+   display: flex;
+   justify-content: center;
+   margin-top: 20px;
+}
+
+#columnaOrden{
+   width: 30px;
+}
+#columnaComision{
+   width: 30px;
+}
+@media print{
+.imprimir-container{
+     display: flex;
+     justify-content: center;
+    }
+}
+
+@media screen and (max-width: 768px) {
+  
+  #tableContainer{
+   display: flex;
+   justify-content: center;
+   
+ 
+   
+}
+#columnaOrden{
+   width: 10px;
+}
+#columnaComision{
+   width: 10px;
+}
+
 }

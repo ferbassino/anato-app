@@ -1,0 +1,21 @@
+.card {
+  background-color: #3498db; /* Blue tone background */
+  border-radius: 10px; /* Square shape with rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+}
+
+.phrase {
+  color: #2ecc71; /* Green letters */
+  font-size: 18px; /* Adjust font size as needed */
+}
+
+/* Responsive styling for mobile */
+@media (max-width: 768px) {
+  .card {
+    padding: 10px;
+  }
+  .phrase {
+    font-size: 14px;
+  }
+}

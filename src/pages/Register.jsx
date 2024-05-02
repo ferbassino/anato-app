@@ -1,14 +1,8 @@
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useRef } from "react";
 import "./login.css";
-import login from "../services/login";
-import { useNavigate } from "react-router-dom";
-import { studentContext } from "../context/StudentContext";
 const Login = () => {
-  const { canActivate, adminRoute, setCanActivate, setIsLoading, user } =
-    useContext(studentContext);
-
-  const navigate = useNavigate();
+  const password = useRef(null);
   const {
     register,
     handleSubmit,
@@ -18,40 +12,48 @@ const Login = () => {
     reset,
   } = useForm({
     defaultValues: {
+      userName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
+  password.current = watch("password", "");
 
   const onSubmit = handleSubmit((data) => {
-    try {
-      setIsLoading(true);
-      const { email, password } = data;
-      const getUser = async () => {
-        const res = await login({
-          email,
-          password,
-        });
-        console.log("respuesta", res.user.roles);
-        if (res.user.roles === "reader") {
-          console.log("respuesta en reader", res);
-          setCanActivate(true);
-          navigate("/home");
-        }
-      };
-      getUser();
-      reset();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    alert(JSON.stringify(data));
+    reset();
   });
 
   return (
     <div className="form-container">
       <form className="form" onSubmit={onSubmit}>
-        <div className="form-group">
+        <div>
+          <label htmlFor="userName">Nombre de usuario</label>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            {...register("userName", {
+              required: {
+                value: true,
+                message: "El nombre de usuario es requerido...",
+              },
+              minLength: {
+                value: 3,
+                message:
+                  "El nombre de usuario debe tener 3 caracteres como mínimo",
+              },
+              maxLength: {
+                value: 30,
+                message:
+                  "El nombre de usuario debe tener 30 caracteres como máximo",
+              },
+            })}
+          />
+          <p> {errors.userName?.message}</p>
+        </div>
+        <div>
           <label htmlFor="email">Email</label>
           <input
             type="text"
@@ -70,7 +72,7 @@ const Login = () => {
           />
           <p> {errors.email?.message}</p>
         </div>
-        <div className="form-group">
+        <div>
           <label htmlFor="password">Contraseña</label>
           <input
             type="text"
@@ -93,7 +95,27 @@ const Login = () => {
           />
           <p> {errors.password?.message}</p>
         </div>
-
+        <div>
+          <label htmlFor="confirmPassword">Confirmar contraseña</label>
+          <input
+            type="text"
+            name="confirmPassword"
+            id="confirmPassword"
+            {...register("confirmPassword", {
+              required: {
+                value: true,
+                message: "La confirmación de la contraseña es requerida...",
+              },
+              validate: (value) => {
+                return (
+                  value === password.current ||
+                  "Las contraseñas deben ser iguales"
+                );
+              },
+            })}
+          />
+          <p> {errors.confirmPassword?.message}</p>
+        </div>
         <input id="submit" type="submit" name="enviar" />
       </form>
     </div>

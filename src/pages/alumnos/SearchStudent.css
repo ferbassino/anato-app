@@ -1,0 +1,127 @@
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main container */
+.app-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+/* Title */
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  margin-bottom: 20px;
+  
+
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.blue-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #1e3a8a;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Search bar */
+.search-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+label {
+  margin-right: 10px;
+}
+
+input[type='text'] {
+  flex-grow: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3498db;
+  color: #1e3a8a;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+ 
+  }}
+
+  /* Table.css */
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #3498db;
+  
+  
+}
+
+th {
+  background-color: #1e3a8a;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+@media only screen and (max-width: 768px) {
+  th, td {
+    padding: 6px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 90%;
+    display: block;
+    overflow-x: auto;
+  }
+
+  th, td {
+    padding: 6px;
+  }
+}

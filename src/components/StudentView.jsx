@@ -3,47 +3,68 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import client from "../api/client";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "./Navbar";
+import StudentNavbar from "./StudentNavbar";
+import { ClipLoader } from "react-spinners";
 const StudentView = () => {
   const { id } = useParams();
   const [alumno, setAlumno] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getStudent = async () => {
-      const response = await client.get(`/api/student/${id}`);
-      setAlumno(response.data.student);
-    };
-    getStudent();
+    try {
+      setLoading(true);
+      const getStudent = async () => {
+        const response = await client.get(`/api/student/${id}`);
+        setAlumno(response.data.student);
+        setLoading(false);
+      };
+      getStudent();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   }, []);
-  const handleHome = () => {
-    navigate("/home");
-  };
 
   return (
-    <section className="text-gray-600 body-font">
-      <button
-        onClick={handleHome}
-        className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-      >
-        Home
-      </button>
-      <div className="container px-5 py-24 mx-auto">
-        <div className="flex flex-col text-center w-full mb-20">
-          <h1 className="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
-            {alumno.apellido}, {alumno.nombres}
-          </h1>
-          <p className="lg:w-2/3 mx-auto leading-relaxed text-2xl">
-            Comisión: {alumno.comision}
-          </p>
-          <p className="lg:w-2/3 mx-auto leading-relaxed text-xl">
-            {alumno.horarioComision}
-          </p>
-          <p className="lg:w-2/3 mx-auto leading-relaxed text-xl">
-            DNI: {alumno.dni}
-          </p>
-        </div>
-        {/* <div className="lg:w-2/3 w-full mx-auto overflow-auto">
+    <>
+      <header>
+        <h1>Gestión anato</h1>
+        <Navbar />
+      </header>
+      <StudentNavbar />
+      {loading ? (
+        <>
+          <div className="spinner-container">
+            <ClipLoader
+              // color={color}
+              loading={true}
+              // cssOverride={override}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </div>
+        </>
+      ) : (
+        <section className="text-gray-600 body-font">
+          <div className="container px-5 py-24 mx-auto">
+            <div className="flex flex-col text-center w-full mb-20">
+              <h1 className="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">
+                {alumno.apellido}, {alumno.nombres}
+              </h1>
+              <p className="lg:w-2/3 mx-auto leading-relaxed text-2xl">
+                Comisión: {alumno.comision}
+              </p>
+              <p className="lg:w-2/3 mx-auto leading-relaxed text-xl">
+                {alumno.horarioComision}
+              </p>
+              <p className="lg:w-2/3 mx-auto leading-relaxed text-xl">
+                DNI: {alumno.dni}
+              </p>
+            </div>
+            {/* <div className="lg:w-2/3 w-full mx-auto overflow-auto">
           <table className="table-auto w-full text-left whitespace-no-wrap">
             <thead>
               <tr>
@@ -139,8 +160,10 @@ const StudentView = () => {
             Button
           </button>
         </div> */}
-      </div>
-    </section>
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 

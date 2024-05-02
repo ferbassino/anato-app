@@ -1,0 +1,16 @@
+/* .title-container {
+  display: flex;
+  justify-content: center;
+} */
+
+.title {
+  background-image: linear-gradient(to bottom right, #0056b3, #0099cc);
+  color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  font-weight: 300;
+  font-size: 36px;
+  padding: 20px;
+  
+  text-align: center;
+}
+

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import client from "../api/client";
+import client from "../../api/client";
 import "./CambioDeComision.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Link } from "react-router-dom";
+import Navbar from "../../components/Navbar";
+import StudentNavbar from "../../components/StudentNavbar";
+import Title from "../../components/Title";
 const CambioDeComision = () => {
   const [dNI1, setDNI1] = useState("");
   const [dNI2, setDNI2] = useState("");
@@ -19,7 +22,6 @@ const CambioDeComision = () => {
         setLoading(true);
         const students = await client.get("api/student");
         setCurrentsStudents(students.data.students);
-        // console.log(students.data.students);
       } catch (error) {
         setLoading(false);
         console.log(error);
@@ -132,7 +134,7 @@ const CambioDeComision = () => {
   };
 
   return (
-    <>
+    <div className="app-container">
       <>
         {loading ? (
           <div className="spinner-container">
@@ -147,6 +149,12 @@ const CambioDeComision = () => {
           </div>
         ) : (
           <>
+            <header>
+              <Title />
+
+              <Navbar />
+            </header>
+            <StudentNavbar />
             <div className="flex w-full justify-center items-end">
               <div className="relative mr-4 lg:w-full xl:w-1/2  md:w-full text-left">
                 <h2 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
@@ -304,7 +312,7 @@ const CambioDeComision = () => {
           </>
         )}
       </>
-    </>
+    </div>
   );
 };
 

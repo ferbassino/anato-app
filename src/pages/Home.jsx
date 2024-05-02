@@ -1,218 +1,73 @@
-import React, { Fragment, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link, Route, Routes } from "react-router-dom";
-import icono from "./../assets/icono.jpg";
-import Students from "./students/Students";
-import CambioDeComision from "./CambioDeComision";
-import CrearAlumno from "./CrearAlumno";
-import BuscarAlumno from "./BuscarAlumno";
+import { useContext, useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
+import logout from "../services/logout";
+import { useNavigate } from "react-router-dom";
+import { studentContext } from "../context/StudentContext";
+import Title from "../components/Title";
+import "./Home.css";
+import { getAllStudents } from "../services/studentsServices";
+import GeneralSummary from "../components/dashboard/GeneralSummary";
+import { ClipLoader } from "react-spinners";
+const Home = () => {
+  const { setCanActivate, setIsLoading, user } = useContext(studentContext);
+  const navigate = useNavigate();
+  const [alumnosActivos, setAlumnosActivos] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-const Home = ({ handleLogout }) => {
-  const [listasVisible, setListasVisible] = useState(true);
-  const [crearAlumnoVisible, setCrearAlumnoVisible] = useState(false);
-  const [cambioVisible, setCambioVisible] = useState(false);
-  const [homeVisible, setHomeVisible] = useState(false);
-  const [buscarVisible, setBuscarVisible] = useState(false);
-  const handleLogin = () => {
-    setVisible(true);
+  const handleClic = () => {
+    setIsLoading(true);
+    setCanActivate(false);
+    logout();
+    setIsLoading(false);
+    navigate(`/`);
   };
-  const mainNavigation = [
-    { name: "Dashboard", to: "#", current: true },
-    { name: "Listas", to: "/listas", current: true },
-    { name: "Gestionar alumno", to: "/crear-alumno", current: true },
-    { name: "Cambio de comisión", to: "/cambio-de-comision", current: true },
 
-    // { name: "Imprimir lista", to: "/imprimir-lista", current: true },
-  ];
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
-  const handleCrear = () => {
-    alert("esta opción está deshabilitada");
-    // setHomeVisible(false);
-    // setCrearAlumnoVisible(true);
-    // setListasVisible(false);
-    // setCambioVisible(false);
-    // setBuscarVisible(false);
+  const getActivesStudents = async () => {
+    try {
+      // setLoading(true);
+      const students = await getAllStudents();
+      if (students) {
+        const activeStudents = students.filter((el) => el.roles === "student");
+        // setLoading(false);
+        return activeStudents;
+      } else {
+        alert("error al buscar alumnos");
+      }
+    } catch (error) {
+      // setLoading(false);
+      console.log(error);
+    }
   };
-  const handleListas = () => {
-    setHomeVisible(false);
-    setCrearAlumnoVisible(false);
-    setListasVisible(true);
-    setCambioVisible(false);
-    setBuscarVisible(false);
-  };
-  const handleCambio = () => {
-    setHomeVisible(false);
-    setCrearAlumnoVisible(false);
-    setListasVisible(false);
-    setCambioVisible(true);
-    setBuscarVisible(false);
-  };
-  const handleHome = () => {
-    setHomeVisible(true);
-    setCrearAlumnoVisible(false);
-    setListasVisible(false);
-    setCambioVisible(false);
-    setBuscarVisible(false);
-  };
-  const handSearch = () => {
-    setHomeVisible(false);
-    setCrearAlumnoVisible(false);
-    setListasVisible(false);
-    setCambioVisible(false);
-    setBuscarVisible(true);
-  };
+
+  useEffect(() => {
+    getActivesStudents();
+  }, []);
 
   return (
-    <>
-      <div>
-        {/************** navbar general ***************/}
+    <div className="app-container">
+      <header>
+        <Title />
+        <Navbar />
+        {loading ? (
+          <>
+            <ClipLoader
+              color="#81a1fc"
+              loading={loading}
+              id="hashLoader"
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
+          </>
+        ) : (
+          <>
+            <GeneralSummary />
+          </>
+        )}
 
-        <Disclosure as="nav" className="bg-gray-800">
-          {({ open }) => (
-            <>
-              <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-                <div className="relative flex h-16 items-center justify-between">
-                  <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                    {/* Mobile menu button*/}
-                    <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                      <span className="absolute -inset-0.5" />
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XMarkIcon
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <Bars3Icon
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Disclosure.Button>
-                  </div>
-                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <div className="flex flex-shrink-0 items-center">
-                      <img
-                        className="h-10 w-auto"
-                        src={icono}
-                        alt="Your Company"
-                      />
-                    </div>
-                    <div className="hidden sm:ml-6 sm:block">
-                      <div className="flex space-x-4">
-                        {/* <button
-                          onClick={handleHome}
-                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                        >
-                          Dashboard
-                        </button> */}
-                        <button
-                          onClick={handleListas}
-                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                        >
-                          Listas
-                        </button>
-                        <button
-                          onClick={handleCrear}
-                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                        >
-                          Gestionar Alumno
-                        </button>
-                        <button
-                          onClick={handleCambio}
-                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                        >
-                          Cambio de comisión
-                        </button>
-                        <button
-                          onClick={handSearch}
-                          className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                        >
-                          Buscar Alumno
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <span onClick={handleLogout} className="text-white">
-                      Logout
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <Disclosure.Panel className="sm:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2">
-                  {/* <button
-                    onClick={handleHome}
-                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                  >
-                    Dashboard
-                  </button> */}
-                  <button
-                    onClick={handleListas}
-                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                  >
-                    Listas
-                  </button>
-                  <button
-                    disabled
-                    onClick={handleCrear}
-                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                  >
-                    Gestionar Alumno
-                  </button>
-                  <button
-                    onClick={handleCambio}
-                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                  >
-                    Cambio de comisión
-                  </button>
-                  <button
-                    onClick={handSearch}
-                    className="flex mx-auto text-white bg-blue-900 border-0 py-2 my-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-sm"
-                  >
-                    Buscar Alumno
-                  </button>
-                </div>
-              </Disclosure.Panel>
-            </>
-          )}
-        </Disclosure>
-
-        {/* ****************fin navbar general ********/}
-      </div>
-      {/* {homeVisible ? (
-        <>
-          <HomeComponent />
-        </>
-      ) : null} */}
-      {listasVisible ? (
-        <>
-          <h1>Seleccionar lista general o comisión</h1>
-          <Students />
-        </>
-      ) : null}
-      {buscarVisible ? (
-        <>
-          <BuscarAlumno />
-        </>
-      ) : null}
-      {crearAlumnoVisible ? (
-        <>
-          <CrearAlumno />
-        </>
-      ) : null}
-      {cambioVisible ? (
-        <>
-          <CambioDeComision />
-        </>
-      ) : null}
-      {/* <CargarAlumnos /> */}
-    </>
+        <button onClick={handleClic}>logout</button>
+      </header>
+    </div>
   );
 };
 
